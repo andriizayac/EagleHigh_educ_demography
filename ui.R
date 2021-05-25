@@ -46,8 +46,9 @@ shinyUI(fluidPage(
                                            
                                            Explore how fast big sagebrush can recover using an equation for logistic population growth, and interactive sliders on the left. For example, drag the «Year» slider to the right to see what big sagebrush cover may look like in 2050! Feel free to also change «r» and «K» parameters (we will explore the rest of sliders in a minute). How do r and K change the curve of recovery?"),
                            # withMathJax("$$ \\text{Logistic Growth Equation:} \\quad \\frac{dN}{dt} = rN(1 - \\frac{N}{K})$$"),
-                           
-                           plotOutput("growthPlot"),
+                           plotOutput("growthPlot", width = "100%", height = 300),
+                           plotOutput("phylopicPlot", width = "100%", height = 200),
+
                            h5("Let’s see how the city of Boise can plan rehabilitation measures to speed up the recovery of big sagebrush. There are several things to consider. First, invasive species, Cheatgrass, has spread widely throughout the Great Basin and the Boise foothills that can drastically change how big sagebrush recovers. Secondly, grazing can also slow down the process. Explore the effects of  «Cheatgrass» and «Grazing» parameters. Do they change the recovery curve in the same way? 
                               
                               On the other hand, management intervention and ecological restoration can greatly facilitate the recovery. Compare the predicted abundance of big sagebrush abundance for 2030 under two scenarios: (i) without Cheatgrass (slider set to 0), and (ii) with moderate Cheatgrass invasion (slider set to 0.5). Keep the sliders for growth rate and carrying capacity parameters set to 0.1 and 25, respectively. 

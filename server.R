@@ -64,7 +64,7 @@ shinyServer(function(input, output) {
   })
   output$growthPlot <- renderPlot({
     out  <- ldat()
-    par(xpd=TRUE, mar = c(5, 5, 9, 1))
+    par(mar = c(4,5,0,1))
     # plot the solution
     plot(out, xlim = c(-10, input$T-1), ylim = c(0, input$k + 5), xaxt = "n",
          lwd = 5, main = "", xlab = "Years", ylab = "Sagebrush cover, %", cex.lab = 1.5)
@@ -76,16 +76,21 @@ shinyServer(function(input, output) {
            col = c(rgb(.1,1,.1, .75), rgb(1,.1,.1, .75), "black"), 
            lty = c(2, 2, 1),  cex = 1, lwd = 3, ncol = 3, bty = "o")
     
-    for(i in 1:round(input$graze*10)) {
-      add_phylopic_base(cow, x = rnorm(1, .7, .1), y = rnorm(1, 1.3, 0.1), 
-                        ysize = rnorm(1, .05, .02) + input$graze*.2, alpha = 1, color = rgb(139/255,69/255,19/255, 1))
-    }
+  }, width = 620, height = 300)
+  output$phylopicPlot <- renderPlot({
+    par(mfrow = c(1,2), mar = c(1,5,0,0))
+    plot(1, type = "n", bty = "n", xlim = c(0, 40), ylim = c(0, 10), xlab = "", ylab = "", xaxt = "n", yaxt = "n")
     for(i in 1:round(input$cheat*20)) {
-      add_phylopic_base(grass, x = rnorm(1, .17, .1), y = rnorm(1, 1.3, .01),
-                        ysize = rnorm(1, .03, 0.02) + input$cheat*.075, alpha = 1, color = "darkgreen")
+      add_phylopic_base(grass, x = rnorm(1, 20, 7), y = rnorm(1, 5, 1.5),
+                        ysize = rnorm(1, .5, .2) + input$cheat*.75, alpha = 1, color = "darkgreen")
     }
-    
-  }, width = 620, height = 400)
+    plot(1, type = "n", bty = "n", xlim = c(0, 1), ylim = c(0, 5), xlab = "", ylab = "", xaxt = "n", yaxt = "n")
+    for(i in 1:round(input$graze*20)) {
+      add_phylopic_base(cow, x = rnorm(1, .5, .2), y = rnorm(1, 2.5, .5),
+                        ysize = rnorm(1, .1, .2) + input$graze*.1, alpha = 1, color = rgb(139/255,69/255,19/255, 1))
+    }
+
+  }, width = 520, height = 300)
   output$landscapePlot <- renderPlot({
     out  <- ldat()
     mat[idx] = out[input$T,2] - northness[idx]*(1-input$aspect)*input$k
