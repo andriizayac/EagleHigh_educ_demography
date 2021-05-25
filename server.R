@@ -78,7 +78,7 @@ shinyServer(function(input, output) {
     
   }, width = 620, height = 300)
   output$phylopicPlot <- renderPlot({
-    par(mfrow = c(1,2), mar = c(1,5,0,0))
+    par(mfrow = c(1,2), mar = c(1,7,0,0))
     plot(1, type = "n", bty = "n", xlim = c(0, 40), ylim = c(0, 10), xlab = "", ylab = "", xaxt = "n", yaxt = "n")
     for(i in 1:round(input$cheat*20)) {
       add_phylopic_base(grass, x = rnorm(1, 20, 7), y = rnorm(1, 5, 1.5),
