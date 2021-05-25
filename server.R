@@ -66,11 +66,15 @@ shinyServer(function(input, output) {
     out  <- ldat()
     par(xpd=TRUE, mar = c(5, 5, 9, 1))
     # plot the solution
-    plot(out, xlim = c(-10, input$T), ylim = c(0, input$k + 1), xaxt = "n",
+    plot(out, xlim = c(-10, input$T-1), ylim = c(0, input$k + 5), xaxt = "n",
          lwd = 5, main = "", xlab = "Years", ylab = "Sagebrush cover, %", cex.lab = 1.5)
     axis(1, at = c(-10:input$T), labels = c(-10:input$T + 1996))
     lines(x = c(-10, input$T), y = rep(out[dim(out)[1],2], length(c(-10, input$T))), lty = "dashed", col = "gray")
-    lines(c(-10, -1, 0), c(rep(input$k, 2), 1), lwd=5, lty = "dashed", col = rgb(1,0,1, .5))
+    lines(c(-10, -1), c(rep(input$k, 2)), lwd=5, lty = "dashed", col = rgb(.1,1,.1, .75))
+    lines(c(-1, 0), c(input$k, 1), lwd=5, lty = "dashed", col = rgb(1,.1,.1, .75))
+    legend("top", legend = c("Pre-wildfire", "Wildfire effect", "Post-wildfire"), 
+           col = c(rgb(.1,1,.1, .75), rgb(1,.1,.1, .75), "black"), 
+           lty = c(2, 2, 1),  cex = 1, lwd = 3, ncol = 3, bty = "o")
     
     for(i in 1:round(input$graze*10)) {
       add_phylopic_base(cow, x = rnorm(1, .7, .1), y = rnorm(1, 1.3, 0.1), 
