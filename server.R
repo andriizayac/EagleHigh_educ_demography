@@ -90,7 +90,7 @@ shinyServer(function(input, output) {
                         ysize = rnorm(1, .1, .2) + input$graze*.1, alpha = 1, color = rgb(139/255,69/255,19/255, 1))
     }
 
-  }, width = 520, height = 300)
+  }, width = 520, height = 200)
   output$landscapePlot <- renderPlot({
     out  <- ldat()
     mat[idx] = out[input$T,2] - northness[idx]*(1-input$aspect)*input$k
