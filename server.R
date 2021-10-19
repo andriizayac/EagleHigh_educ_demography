@@ -20,6 +20,7 @@ library(rphylopic)
 library(grid)
 library(ggplot2)
 library(rgdal)
+library(emo)
 
 # === load aspect raster
 asp <- raster(paste0(getwd(),"/www/dcewaspect.tif"))
@@ -54,7 +55,11 @@ cow <- image_data("dc5c561e-e030-444d-ba22-3d427b60e58a", size = 512)[[1]]
 ncows <- 10
 img <- readPNG("www/fire.png")
 
+# background color
+bgcol = "#bffbf3"
+
 shinyServer(function(input, output) {
+  
   ldat <- reactive({
     u0 = c(N = 1)
     times = 1:100
@@ -74,7 +79,7 @@ shinyServer(function(input, output) {
       events$time[which(events$time > 0)]
     } else {NA}
 
-    par(mar = c(4,5,0,1))
+    par(mar = c(4,5,1,1))
     # plot the solution
     plot(out, xlim = c(-10, 100), ylim = c(0, input$k + 5), xaxt = "n",
          lwd = 5, main = "", xlab = "Years", ylab = "Sagebrush cover, %", cex.lab = 1.5)
@@ -89,14 +94,15 @@ shinyServer(function(input, output) {
     grid.raster(img, x = c(.22, burns/130 + .22), y = .07, width = .075, just = "center")
   }, width = 620, height = 300)
   output$phylopicPlot <- renderPlot({
-    par(mar = c(4,5,0,0))
-    (p <- ggplot(data.frame()) + xlim(0, 1) + ylim(0, 2) + 
+    par(mar = c(0,0,0,0), bg = bgcol)
+    (p <- ggplot(data.frame()) + xlim(0, 1) + ylim(0, 1) + 
         geom_point(color = rgb(0,0,0,0)) )
     for (i in 1:round(input$cheat*50) ) {
       p <- p + add_phylopic(grass, 1, runif(1, 0, 1), 
                             runif(1, .25, .75),.75, color = "darkgreen") 
     }
-    p + theme_phylo_blank2()
+    p + theme_phylo_blank2() 
+      
 
   }, width = 620, height = 150)
   output$landscapePlot <- renderPlot({
@@ -105,11 +111,16 @@ shinyServer(function(input, output) {
     
     mat[mat < 0] <- u0
     cuts <- round(seq(0, input$k, l = input$k))
-    par(mfrow = c(1, 2))
-    mtext("My 'Title' in a strange place", side = 3, line = -6, outer = TRUE)
-    raster::plotRGB(dcew, margins = T, main = "Satellite View")
+    par(mfrow = c(1, 2), mar = c(0,0,1,6), bg = bgcol)
+    # mtext("My 'Title' in a strange place", side = 3, line = -6, outer = TRUE)
+    raster::plotRGB(dcew, margins = T, main = "Satellite View", colNA = bgcol)
     raster::plot(mat, breaks = cuts, col = rev(viridis(input$k)), 
-                 box = F, axes = F, main = "Sagebrush cover, %")
+                 box = F, axes = F, main = "Sagebrush map",
+                 legend = FALSE)
+    raster::plot(mat, legend.only = TRUE, col = rev(viridis(input$k)),
+                 legend.width=1, legend.shrink=0.5,
+                 legend.args = list(text = 'Abundance, %', side = 4, 
+                                    font = 2, line = 2, cex = 1))
     par()
   })
 })
