@@ -1,76 +1,28 @@
 
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
-library(shiny)
-library(deSolve)
-library(raster)
-library(viridis)
-library(png)
-library(rphylopic)
-library(grid)
-library(ggplot2)
-library(rgdal)
-library(emo)
-
-# === load aspect raster
-asp <- raster(paste0(getwd(),"/www/dcewaspect.tif"))
-northness <- (cos(asp*pi/180)+1)/2
-idx <- is.na(northness) == FALSE 
-mat <- northness
-# === load RGB image
-dcew <- stack(paste0(getwd(),"/www/dcewRGB.tif"))
-dcew[values(dcew[[1]]) == 0] <- NA
-
-# define an ODE function and covariates
-year0 <- 1996
-model <- function (time, u0, parms) {
-  with(as.list(c(u0, parms)), {
-    # gr = -r/1.01; ch = -k/2
-    # h = r + eta*gr
-    # g = k + gamma*ch
-    dN <-   r * N * (1 - N / k) 
-    list(dN) })
-}
-u0 <- c(N = 1)
-pulsefn <- function(x) {
-  data.frame(var = "N", 
-             time = 1:100 * rbinom(100, 1, x), 
-             value = .01, 
-             method = "multiply")
-}
-# === load icons
-#grass <- readPNG(paste0(getwd(),"/www/grass.png"))
-grass <- image_data("4a00d067-54e4-45dd-abce-9a0b606a34dd", size = 512)[[1]]
-cow <- image_data("dc5c561e-e030-444d-ba22-3d427b60e58a", size = 512)[[1]]
-ncows <- 10
-img <- readPNG("www/fire.png")
-
-# background color
-bgcol = "#bffbf3"
-
 shinyServer(function(input, output) {
   
+  # --- generate data inputs
   ldat <- reactive({
-    u0 = c(N = 1)
     times = 1:100
     params = c(r = input$r, k = input$k, 
                gamma = input$cheat, eta = input$graze)
-    events = pulsefn(input$cheat*.1)
+    if(input$firestoch == TRUE) {
+      events = pulsefn.rand(input$cheat*.05)
+    } else {
+      events = pulsefn(input$cheat*.05)
+    }
+    
     events[ 1:15 , "time"] <- 0
     return(list(ode = ode(u0, times, model, params, method = "impAdams", 
-               events = list(data = events)), events = events)
-           )
+                          events = list(data = events)), events = events)
+    )
   })
+  fireIn <- reactive({
+    return(filter(fires, Fire_Year >= input$range[1], Fire_Year <= input$range[2] ))
+  })
+  
+  
+  # --- sagebrush growth plot
   output$growthPlot <- renderPlot({
     dat  <- ldat()
     out <- dat$ode
@@ -78,15 +30,15 @@ shinyServer(function(input, output) {
     burns <- if(sum(events$time) > 0) {
       events$time[which(events$time > 0)]
     } else {NA}
-
+    
     par(mar = c(4,5,1,1))
     # plot the solution
     plot(out, xlim = c(-10, 100), ylim = c(0, input$k + 5), xaxt = "n",
-         lwd = 5, main = "", xlab = "Years", ylab = "Sagebrush cover, %", cex.lab = 1.5)
+         lwd = 7, main = "", xlab = "Years", ylab = "Sagebrush cover, %", cex.lab = 1.5)
     axis(1, at = seq(-10,100, by = 10), labels = seq(-10,100, by = 10)+ 1996)
     lines(x = c(-10, input$T), y = rep(out[dim(out)[1],2], length(c(-10, input$T))), lty = "dashed", col = "gray")
-    lines(c(-10, -1), c(rep(input$k, 2)), lwd=5, lty = "dashed", col = rgb(.1,1,.1, .75))
-    lines(c(-1, 0), c(input$k, 1), lwd=5, lty = "dashed", col = rgb(1,.1,.1, .75))
+    lines(c(-10, -1), c(rep(input$k, 2)), lwd=7, lty = "dotted", col = rgb(.1,1,.1, .75))
+    lines(c(-1, 0), c(input$k, 1), lwd=7, lty = "dotted", col = rgb(1,.1,.1, .75))
     legend("top", legend = c("Pre-wildfire", "Wildfire effect", "Post-wildfire"), 
            col = c(rgb(.1,1,.1, .75), rgb(1,.1,.1, .75), "black"), 
            lty = c(2, 2, 1),  cex = 1, lwd = 3, ncol = 3, bty = "o")
@@ -94,7 +46,7 @@ shinyServer(function(input, output) {
     grid.raster(img, x = c(.22, burns/130 + .22), y = .07, width = .075, just = "center")
   }, width = 620, height = 300)
   output$phylopicPlot <- renderPlot({
-    par(mar = c(0,0,0,0), bg = bgcol)
+    par(mar = c(0,0,0,0), bg = bgcolor)
     (p <- ggplot(data.frame()) + xlim(0, 1) + ylim(0, 1) + 
         geom_point(color = rgb(0,0,0,0)) )
     for (i in 1:round(input$cheat*50) ) {
@@ -102,25 +54,35 @@ shinyServer(function(input, output) {
                             runif(1, .25, .75),.75, color = "darkgreen") 
     }
     p + theme_phylo_blank2() 
-      
-
-  }, width = 620, height = 150)
-  output$landscapePlot <- renderPlot({
-    out  <- ldat()
-    mat[idx] = mean(out$ode[,2]) - northness[idx]*(1-input$aspect)*input$k
     
-    mat[mat < 0] <- u0
-    cuts <- round(seq(0, input$k, l = input$k))
-    par(mfrow = c(1, 2), mar = c(0,0,1,6), bg = bgcol)
-    # mtext("My 'Title' in a strange place", side = 3, line = -6, outer = TRUE)
-    raster::plotRGB(dcew, margins = T, main = "Satellite View", colNA = bgcol)
-    raster::plot(mat, breaks = cuts, col = rev(viridis(input$k)), 
-                 box = F, axes = F, main = "Sagebrush map",
-                 legend = FALSE)
-    raster::plot(mat, legend.only = TRUE, col = rev(viridis(input$k)),
-                 legend.width=1, legend.shrink=0.5,
-                 legend.args = list(text = 'Abundance, %', side = 4, 
-                                    font = 2, line = 2, cex = 1))
-    par()
+    
+  }, width = 620, height = 100)
+  
+  # --- map
+  output$mymap = renderLeaflet({
+    firesInt <- fireIn()
+    leaflet() %>%
+      addProviderTiles(providers$CartoDB.Positron) %>% 
+      # addPolygons(data = firesInt, weight = 1, col = "red", fill = TRUE, layerId = firesInt$Fire_Name) %>% 
+      addCircleMarkers(
+        lng=firesInt$cent.x,
+        lat=firesInt$cent.y,
+        radius = log(firesInt$Hectares_B)/2,
+        stroke = FALSE,
+        layerId = firesInt$Fire_Name,
+        fillOpacity = 0.8) %>%
+      addPolygons(data = states, weight = 2, col = "black", fill = FALSE) %>% 
+      setView(zoom = initial_zoom, lat = 43.6891288, lng = -116.3551687) 
+  })
+  
+  observeEvent(input$mymap_marker_click, { # update the location selectInput on map clicks
+    firesInt <- fireIn()
+    # event <- input$mymap_shape_click
+    event <- input$mymap_marker_click
+    print(event) 
+    obs <- filter(firesInt, Fire_Name == event$id)
+    lab <- paste0("NAME: ", event$id, ", YEAR: ", obs$Fire_Year, ", AREA: ", round(obs$Hectares_B), " ha")
+    leafletProxy("mymap") %>% 
+      addPopups(event$lng, event$lat, lab)
   })
 })
