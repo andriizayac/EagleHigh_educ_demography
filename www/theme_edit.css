@@ -1,0 +1,43 @@
+body {
+  background-color: #bffbf3;
+  color: black; /* text color */
+}
+
+/* Change header text to imported font */
+h1, h2, h3, h4, h5 {
+  font-family: 'Georgia', serif;
+}
+
+p {
+  font-family: 'Arial', sans-serif;
+  text-indent: 0px;
+}
+
+div.gallery1 {
+  margin: 0px;
+  border: 3px solid black;
+  float: left;
+  width: 100%;
+}
+
+/* image gallery stuff */
+div.gallery {
+  margin: 10px;
+  border: 3px solid black;
+  float: left;
+  width: 180px;
+}
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+div.desc {
+  padding: 20px;
+  text-align: center;
+  height: 50px;
+}
+
+/* Make text visible on inputs */
+.shiny-input-container {
+  color: #474747;
+}
