@@ -1,42 +1,146 @@
+/* general appearense edits */
 body {
-  background-color: #bffbf3;
+  height: 100vh;
+  margin: 0;
+  
+  background-image: url("background_image.jpg");
+  
+  background-color: white;
+  background-repeat: repeat;
+  background-size: cover;
+  
   color: black; /* text color */
+}
+.container-fluid {
+margin-right: auto;
+margin-left: auto;
+
+padding-left: 0px;
+padding-right: 0px;
+
+}
+.navbar {
+position: relative;
+min-height: 45px;
+margin-bottom: 0px;
+padding-left: 10px;
+border: 1px solid transparent;
 }
 
 /* Change header text to imported font */
 h1, h2, h3, h4, h5 {
   font-family: 'Georgia', serif;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 p {
   font-family: 'Arial', sans-serif;
   text-indent: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
-div.gallery1 {
-  margin: 0px;
-  border: 3px solid black;
-  float: left;
-  width: 100%;
+/* welcome background image */
+.welcomebg {
+  /* The image used 
+  background-image: url("welcome/welcome_test_img.png");
+  */
+  /* Full height */
+  height: 100vh;
+  
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.bg {
+  position: absolute;
+  top:0px;
+  left:0px;
+  /* The image used */
+  background-image: url("background_image.jpg");
+  
+  /* Full height */
+  height: 100%;
+  margin:0px;
+  
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.5;
+  z-index: 0;
+}
+.hole{
+    z-index:0;
+    position:absolute;
+    width: 485px;
+    height: 485px;
+    top: -95px;
+    left: -65px;
+    background: rgba(255,255,255,.75);
+    border-radius:50%;
+    border: 17px solid rgba(255,255,255,.25);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
 }
 
 /* image gallery stuff */
+div.contGallery{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 div.gallery {
   margin: 10px;
   border: 3px solid black;
-  float: left;
   width: 180px;
 }
 div.gallery img {
   width: 100%;
-  height: auto;
+  /* height: auto; */
 }
 div.desc {
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   height: 50px;
 }
 
+/* centered content theme */
+div.container{
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0px;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  min-height: 100%;
+}
+
+.vid {
+  width: 50vh;
+  height: 100vh;
+}
+
+.factContainer {
+  display:flex;
+}
+
+.factText {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* height: 300px; */
+    justify-content: center;
+}
 /* Make text visible on inputs */
 .shiny-input-container {
   color: #474747;
