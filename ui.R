@@ -147,11 +147,11 @@ ui <- fluidPage(
                                                fire-dependent ecosystems healthy.
                                  </p>
                               </div>
-                              <img style="width:50%; height:50%" src="welcome/welcome_img5.png">
+                              <img style="width:50%; height:50%" src="wildfire.jpg">
                              </div>
 
                              <div class="factContainer" style="background-color:lightgreen;">
-                              <img style="width:45%; height:45%" src="welcome/welcome_img2.png">
+                              <img style="width:45%; height:45%" src="campfire.jpg">
                               <div class="factText">
                                 <h4>How do wildfires start?</h4>
                                 <p>There is a wide range of activities and events that can
@@ -181,11 +181,11 @@ ui <- fluidPage(
                                                times leaves of low sagebrush are an important source of food
                                                for sage grouse.</p>
                               </div>
-                              <img style="width:40%; height:40%" src="welcome/welcome_img1.png">
+                              <img style="width:40%; height:40%" src="sagebrush.jpg">
                              </div>
 
                              <div class="factContainer" style="background-color:rgba(246, 170, 154,0.75);">
-                              <img style="width:50%; height:50%" src="welcome/welcome_img4.png">
+                              <img style="width:40%; height:40%" src="genetics.png">
                               <div class="factText">
                                 <h4>An interesting fact about sagebrush</h4>
                                 <p>Sagebrush is an interesting species from the
@@ -209,7 +209,7 @@ ui <- fluidPage(
                                                In different times of the year, we can also see the largest hawk in the United States, the
                                                ferruginous hawk, soaring above Idaho landscapes.</p>
                               </div>
-                              <img style="width:45%; height:45%" src="welcome/welcome_img6.png">
+                              <img style="width:45%; height:45%" src="quail.jpg">
                              </div>
 
                             </div> <!-- parent -->
