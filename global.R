@@ -14,6 +14,7 @@ library(leaflet)
 library(sf)
 library(dplyr)
 library(htmltools)
+library(bslib)
 
 
 
@@ -24,13 +25,14 @@ library(htmltools)
 # mat <- northness
 
 # === load fire dataset and state boundaries
-firesp <- st_read("data/fires_1870_2015_simplified_v2.shp") %>% 
+file <- "data/fires_1870_2015_simplified_v2.shp"
+firesp <- st_read(file) %>% 
   filter(Hectares_B > 500) %>% 
   st_geometry() %>% 
   st_centroid() %>%
   st_transform(4326) 
 
-fires <- st_read("data/fires_1870_2015_simplified_v2.shp") %>% 
+fires <- st_read(file) %>% 
   filter(Hectares_B > 500) %>% 
   st_transform(4326) %>% 
   mutate(centroids = st_coordinates(firesp),

@@ -1,6 +1,6 @@
 
 shinyServer(function(input, output) {
-  
+  # bs_themer()
   # --- generate data inputs
   ldat <- reactive({
     times = 1:100
@@ -63,22 +63,23 @@ shinyServer(function(input, output) {
     firesInt <- fireIn()
     leaflet() %>%
       addProviderTiles(providers$CartoDB.Positron) %>% 
-      # addPolygons(data = firesInt, weight = 1, col = "red", fill = TRUE, layerId = firesInt$Fire_Name) %>% 
-      addCircleMarkers(
-        lng=firesInt$cent.x,
-        lat=firesInt$cent.y,
-        radius = log(firesInt$Hectares_B)/2,
-        stroke = FALSE,
-        layerId = firesInt$Fire_Name,
-        fillOpacity = 0.8) %>%
+      addPolygons(data = firesInt, weight = 1, col = "red", fill = TRUE, layerId = firesInt$Fire_Name) %>% 
+      # addCircleMarkers(
+      #   lng=firesInt$cent.x,
+      #   lat=firesInt$cent.y,
+      #   radius = log(firesInt$Hectares_B)/2,
+      #   stroke = FALSE,
+      #   layerId = firesInt$Fire_Name,
+      #   fillOpacity = 0.8) %>%
       addPolygons(data = states, weight = 2, col = "black", fill = FALSE) %>% 
       setView(zoom = initial_zoom, lat = 43.6891288, lng = -116.3551687) 
   })
   
-  observeEvent(input$mymap_marker_click, { # update the location selectInput on map clicks
+  # input$mymap_maker/shape_click
+  observeEvent(input$mymap_shape_click, { # update the location selectInput on map clicks
     firesInt <- fireIn()
-    # event <- input$mymap_shape_click
-    event <- input$mymap_marker_click
+    event <- input$mymap_shape_click
+    # event <- input$mymap_marker_click
     print(event) 
     obs <- filter(firesInt, Fire_Name == event$id)
     lab <- paste0("NAME: ", event$id, ", YEAR: ", obs$Fire_Year, ", AREA: ", round(obs$Hectares_B), " ha")
