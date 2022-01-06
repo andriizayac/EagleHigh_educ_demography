@@ -37,7 +37,7 @@ ui <- fluidPage(
                       ),
              tabPanel("Wildfires in Idaho",
                       tags$div(class = "container",
-                               tags$h3("What is the Wildfire History in the Great Basin?"),
+                               tags$h3("What is the WildHorse History in the Great Basin?"),
                                tags$p("click on a fire to learn more about it", style="color:rgba(0,0,0,.7);"),
                                leafletOutput("mymap", height = 500),
                                sliderInput("range", "Year of Fire", min = 1870, max = 2015, value = c(2000, 2010), sep = "")
