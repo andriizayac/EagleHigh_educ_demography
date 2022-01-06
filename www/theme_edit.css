@@ -44,7 +44,7 @@ p {
 /* welcome background image */
 .welcomebg {
   /* The image used 
-  background-image: url("welcome/welcome_test_img.png");
+  background-image: url("welcome/welcome_img_single.png");
   */
   /* Full height */
   height: 100vh;
@@ -59,17 +59,17 @@ p {
   top:0px;
   left:0px;
   /* The image used */
-  background-image: url("background_image.jpg");
+  background-image: url("welcome/welcome_img_single.png");
   
   /* Full height */
-  height: 100%;
-  margin:0px;
+  height: 100vh;
+  width: 100%;
   
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  opacity: 0.5;
+  opacity: 1;
   z-index: 0;
 }
 .hole{
@@ -121,6 +121,13 @@ div.container{
   right: 10%;
   width: 80%;
   min-height: 100%;
+}
+
+/* override center container */
+.lefty {
+  display: flex;
+  flex-direction: row;
+  padding-left: 200px;
 }
 
 .vid {
