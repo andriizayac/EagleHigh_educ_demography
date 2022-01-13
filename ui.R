@@ -235,7 +235,28 @@ ui <- fluidPage(
                               </div>
                               </div>')
               ) # close panel
+             ),
+             tabPanel("About",
+               HTML('<div style="padding-top:20px; padding-bottom:20px; background-color: white; border:10px; border-color:black;">
+                      <h3>About this App</h3>
+                      <p>This app was developed by Andrii Zaiats, Jennifer Foster, Amethyst Tagney, and Trevor Caughlin.
+                         Andrii is a graduate student at BSU studying the ecology of big sagebrush and its interactions 
+                         with wildfires; Jennifer Foster …; Amethyst Tagney …; and Trevor Caughlin is a professor at 
+                         Boise State University. If you have any thoughts or ideas about sagebrush and wildfires, we are 
+                         always happy to chat about science, ecology, and local ecosystems. 
+                         Any comments or questions about the app? Send us an  
+                         <a href="mailto: andriizaiats@u.boisestate.edu">email</a>! 
+                      </p>
+                      <p>We thank Boise State University, Murdock Trust Program, and Idaho EPSCoR GEM3 programs for their support.</p>
+                      
+                        <img src="logos/bsu_logo.png" alt="BSU" style="width:12%; height:12%; padding-left:25px; padding-rigth:25px;">
+                        <img src="logos/murdock_logo.png" alt="Murdock Trust" style="width:25%; height:15%; padding-left:25px; padding-rigth:25px;">
+                        <img src="logos/gem3_logo.png" alt="EPSCoR GEM3" style="width:20%; height:15%; padding-left:25px; padding-rigth:25px;">
+                      
+                     </div>
+                     ')
              )
+             
              
   ) # close navbar layout
 )
