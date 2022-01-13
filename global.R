@@ -15,6 +15,11 @@ library(htmltools)
 
 # === load fire dataset and state boundaries
 file <- "data/fires_1870_2015_simplified_v2.shp"
+firesp <- st_read(file) %>% 
+  filter(Hectares_B > 500) %>% 
+  st_geometry() %>% 
+  st_centroid() %>%
+  st_transform(4326) 
 
 fires <- st_read(file) %>% 
   filter(Hectares_B > 500) %>% 
@@ -34,6 +39,7 @@ dcew[values(dcew[[1]]) == 0] <- NA
 year0 <- 1996
 u0 <- c(N = 1)
 ncows <- 10
+bgcolor <- "#bffbf3"
 initial_zoom <- 10
 
 # === functions: ODE , covariates, and the pulse function
