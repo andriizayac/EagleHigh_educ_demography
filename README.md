@@ -1,2 +1,2 @@
 # EagleHigh_educ_demography
-This is an educational R Shiny app introducing an interaction between plant populations, environment, and disturbance regimes
+This is an R Shiny app developed to introduce middle and high school students to the concepts of plant populations, ecological disturbance, and adversary effects of invasive species. The app was developed by Andrii Zaiats, Jennifer Foster, Amethyst Tagney, and Trevor Caughlin. Photo credits: Peter Olsoy, Andrii Zaiats, ...
