@@ -3,34 +3,18 @@ library(shiny)
 library(shinyWidgets)
 library(deSolve)
 library(raster)
-library(viridis)
 library(png)
 library(rphylopic)
 library(grid)
 library(ggplot2)
 library(rgdal)
-library(emo)
 library(leaflet)
 library(sf)
 library(dplyr)
 library(htmltools)
-library(bslib)
-
-
-
-# # === load aspect raster
-# asp <- raster(paste0(getwd(),"/www/dcewaspect.tif"))
-# northness <- (cos(asp*pi/180)+1)/2
-# idx <- is.na(northness) == FALSE 
-# mat <- northness
 
 # === load fire dataset and state boundaries
 file <- "data/fires_1870_2015_simplified_v2.shp"
-firesp <- st_read(file) %>% 
-  filter(Hectares_B > 500) %>% 
-  st_geometry() %>% 
-  st_centroid() %>%
-  st_transform(4326) 
 
 fires <- st_read(file) %>% 
   filter(Hectares_B > 500) %>% 
@@ -50,7 +34,6 @@ dcew[values(dcew[[1]]) == 0] <- NA
 year0 <- 1996
 u0 <- c(N = 1)
 ncows <- 10
-bgcolor <- "#bffbf3"
 initial_zoom <- 10
 
 # === functions: ODE , covariates, and the pulse function
@@ -77,9 +60,7 @@ pulsefn.rand <- function(x) {
 }
 
 # === load icons from rphylopic
-#grass <- readPNG(paste0(getwd(),"/www/grass.png"))
 grass <- image_data("4a00d067-54e4-45dd-abce-9a0b606a34dd", size = 512)[[1]]
-cow <- image_data("dc5c561e-e030-444d-ba22-3d427b60e58a", size = 512)[[1]]
 img <- readPNG("www/fire.png")
 
 
