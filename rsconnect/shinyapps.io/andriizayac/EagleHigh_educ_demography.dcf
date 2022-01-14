@@ -5,8 +5,8 @@ account: andriizayac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4880683
-bundleId: 5463222
+bundleId: 5469564
 url: https://andriizayac.shinyapps.io/EagleHigh_educ_demography/
-when: 1642050501.88238
+when: 1642186775.06449
 asMultiple: FALSE
 asStatic: FALSE

@@ -239,7 +239,7 @@ ui <- fluidPage(
              tabPanel("About",
                HTML('<div style="padding-top:20px; padding-bottom:20px; background-color: white; border:10px; border-color:black;">
                       <h3>About this App</h3>
-                      <p>This app was developed by Andrii Zaiats, Jennifer Foster, Amethyst Tagney, and Trevor Caughlin.
+                      <p>This app was developed in a collaboration between Jennifer Foster (Eagle High School) and Andrii Zaiats, Amethyst Tagney, and Trevor Caughlin (Boise State Univeristy).
                          Andrii is a graduate student at BSU studying the ecology of big sagebrush and its interactions 
                          with wildfires; Jennifer Foster …; Amethyst Tagney …; and Trevor Caughlin .... If you have any thoughts or ideas about sagebrush and wildfires, we are 
                          always happy to chat about science, ecology, and local ecosystems. 
